@@ -1,0 +1,214 @@
+
+# █░█ █▀ █▀▀ █▀█   █▀█ █▀█ █▀▀ █▀▀ █▀
+# █▄█ ▄█ ██▄ █▀▄   █▀▀ █▀▄ ██▄ █▀░ ▄█
+
+# Set your personal hyprland configuration here
+
+##########################################################################################################################
+##########################################################################################################################
+
+# // █ █▄░█ █▀█ █░█ ▀█▀
+# // █ █░▀█ █▀▀ █▄█ ░█░
+
+input {
+    # kb_layout = us
+     follow_mouse = 1
+     sensitivity = 1.0
+    # force_no_accel = 0
+      accel_profile = adaptive #flat 
+    # numlock_by_default = true
+
+    touchpad {
+        natural_scroll = no
+    }
+}
+
+##########################################################################################################################
+##########################################################################################################################
+
+# // █▀▀ █▀▀ █▀ ▀█▀ █░█ █▀█ █▀▀ █▀
+# // █▄█ ██▄ ▄█ ░█░ █▄█ █▀▄ ██▄ ▄█
+
+gestures {
+#     workspace_swipe = true
+#     workspace_swipe_fingers = 3
+}
+
+##########################################################################################################################
+##########################################################################################################################
+
+# // █▀▄▀█ █ █▀ █▀▀
+# // █░▀░█ █ ▄█ █▄▄
+
+misc {
+    vfr = true
+    # enable_swallow = true
+    # swallow_regex = (foot|kitty|allacritty|Alacritty|ghostty|Ghostty|org.wezfurlong.wezterm)
+}
+
+# Don't show update on first launch
+ecosystem {
+  # no_update_news = true
+}
+
+##########################################################################################################################
+##########################################################################################################################
+
+# // █▀▄ █▀▀ █▀▀ █▀█ █▀█ ▄▀█ ▀█▀ █ █▀█ █▄░█
+# // █▄▀ ██▄ █▄▄ █▄█ █▀▄ █▀█ ░█░ █ █▄█ █░▀█
+
+##########################################################################################################################
+##########################################################################################################################
+
+decoration {
+  blur {
+        enabled = true
+        
+        # Tamaño del desenfoque (radio). 
+        # 3 a 5 es suave. Más de 6 consume mucho.
+        size = 4
+        
+        # Cantidad de veces que el algoritmo pasa (Calidad).
+        # 1 es rápido pero feo. 
+        # 2 es el equilibrio perfecto.
+        # 3+ es pesado.
+        passes = 2
+        
+        # Optimizaciones obligatorias
+        new_optimizations = true
+        ignore_opacity = true
+        xray = false
+        
+        # Ajustes visuales para que se vea "moderno"
+        noise = 0.01
+        contrast = 0.9
+        brightness = 0.8
+    }
+}
+
+##########################################################################################################################
+##########################################################################################################################
+
+# █▀▄▀█ █▀█ █▄░█ █ ▀█▀ █▀█ █▀█
+# █░▀░█ █▄█ █░▀█ █ ░█░ █▄█ █▀▄
+
+# 1. LAPTOP (eDP-1) - Izquierda
+# Scale 1.0 arregla el problema de que "todo se ve grande".
+# Antes lo tenías en 1.50, ahora tendrás mucho más espacio real.
+monitor = eDP-1, 1920x1080@60, 0x0, 1.0
+
+# 2. MONITOR XIAOMI (HDMI-A-1) - Derecha
+# 60Hz estables para no forzar la GPU.
+# Posición '1920x0': Empieza justo donde termina la laptop.
+monitor = HDMI-A-1, 2560x1440@60, 1920x0, 1.0
+
+
+# 3. COMPORTAMIENTO AL CERRAR LA TAPA (Clamshell)
+# Si cierras la laptop, se apaga la pantalla interna y solo usas el Xiaomi.
+bindl = , switch:on:Lid Switch, exec, hyprctl keyword monitor "eDP-1, disable"
+bindl = , switch:off:Lid Switch, exec, hyprctl keyword monitor "eDP-1, 1920x1080@60, 0x0, 1.0"
+
+##########################################################################################################################
+##########################################################################################################################
+
+# // █░█░█ █▀█ █▀█ █▄▀ █▀ █▀█ ▄▀█ █▀▀ █▀▀ █▀
+# // ▀▄▀▄▀ █▄█ █▀▄ █░█ ▄█ █▀▀ █▀█ █▄▄ ██▄ ▄█
+
+# Reglas estrictas:
+
+workspace = 1, monitor:eDP-1
+
+##########################################################################################################################
+##########################################################################################################################
+
+
+# █▄▀ █▀▀ █▄█ █▄▄ █ █▄░█ █▀▄ █ █▄░█ █▀▀ █▀
+# █░█ ██▄ ░█░ █▄█ █ █░▀█ █▄▀ █ █░▀█ █▄█ ▄█
+
+##########################################################################################################################
+##########################################################################################################################
+
+# Atajo a userprefs.conf (Este archivo!)
+bind = SUPER SHIFT, K, exec, code ~/.config/hypr/userprefs.conf
+# Abrir Terminal con ENTER (Más cómodo)
+bind = SUPER, Return, exec, $TERMINAL
+
+# Maximizar ventana (Mantiene la barra de estado visible)
+bind = SUPER, F, fullscreen, 1
+
+# Abrir OBS con Wayland nativo
+bind = SUPER, O, exec, env -u LIBVA_DRIVER_NAME OBS_USE_EGL=1 obs
+
+##########################################################################################################################
+##########################################################################################################################
+
+# █▀▄▀█ █▀▀ █▀▄ █ ▄▀█
+# █░▀░█ ██▄ █▄▀ █ █▀█
+
+# Mapear tecla INSERT para Captura Congelada (Igual que Super+Ctrl+P)
+bind = , Insert, exec, hyde-shell screenshot sf
+
+##########################################################################################################################
+##########################################################################################################################
+
+# // █▀▀ █▄░█ █░█
+# // ██▄ █░▀█ ▀▄▀
+
+# Variable de entorno para navegador predeterminado
+$BROWSER = brave
+env = BROWSER,brave
+
+# Iniciar el gestor de claves (Soluciona login de GitHub/Brave)
+exec-once = /usr/bin/gnome-keyring-daemon --start --components=secrets
+
+##########################################################################################################################
+########################################################################################################################## 
+
+# █▀▀ █▀█ █░█
+# █▄█ █▀▀ █▄█
+
+
+# ───────────────────────────────────────
+# EN CASA (MODO NVIDIA PRIORIDAD)
+# ───────────────────────────────────────
+
+# Orden: Primero la NVIDIA (card0), luego la Intel (card1)
+env = AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1
+
+# 2. VARIABLES NVIDIA ESTÁNDAR
+env = LIBVA_DRIVER_NAME,nvidia
+env = XDG_SESSION_TYPE,wayland
+env = GBM_BACKEND,nvidia-drm
+env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+
+# 3. OPTIMIZACIÓN PARA APPS (Electron/Brave/Code)
+env = NVD_BACKEND,direct
+env = ELECTRON_OZONE_PLATFORM_HINT,auto
+
+
+# ───────────────────────────────────────
+# PORTÁTIL (FUERA DE CASA - INTEL FIRST)
+# ───────────────────────────────────────
+
+
+# ACTIVAR SI NO QUIERO MODO SOLO NVIDIA: Orden híbrido: Intel primero, NVIDIA disponible bajo demanda
+#env = AQ_DRM_DEVICES,/dev/dri/card1:/dev/dri/card0
+
+########################################################################################################################## 
+########################################################################################################################## 
+
+# ▄▀█ █▄░█ █▀▄ █▀█ █▀█ █ █▀▄
+# █▀█ █░▀█ █▄▀ █▀▄ █▄█ █ █▄▀
+# Android SDK
+#env = ANDROID_HOME,$HOME/Android/Sdk
+
+#env = PATH,$PATH:$ANDROID_HOME/platform-tools:$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$ANDROID_HOME/tools/bin
+
+
+# NUEVAS CONFIGURACIONES JOHAN MARZO 2026
+
+# Por si el cursor también se te pone lento en los navegadores
+
+cursor {
+    no_hardware_cursors = true
+}
