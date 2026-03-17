@@ -1,0 +1,47 @@
+Aquí está tu bitácora completa de hoy:
+
+🗒️ Bitácora — 17 Marzo 2026
+Acer Nitro AN515-52 | CachyOS Arch | Hyprland | GTX 1050
+
+🔧 Problema inicial
+Brave se congelaba en ChatGPT. Temperaturas altas en reposo (73-75°C). GPU en P5 sin razón.
+
+✅ Lo que hicimos
+1. GRUB — activar DRM de NVIDIA
+Archivo: /etc/default/grub
+nvidia_drm.modeset=1 nvidia_drm.fbdev=1
+bashsudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo mkinitcpio -P
+2. Hyprland — variables de entorno
+Archivo: ~/.config/hypr/userprefs.conf
+bashenv = AQ_DRM_DEVICES,/dev/dri/card0:/dev/dri/card1
+env = LIBVA_DRIVER_NAME,nvidia
+env = XDG_SESSION_TYPE,wayland
+env = GBM_BACKEND,nvidia-drm
+env = __GLX_VENDOR_LIBRARY_NAME,nvidia
+env = NVD_BACKEND,direct
+env = ELECTRON_OZONE_PLATFORM_HINT,wayland  # era auto
+env = __GL_GSYNC_ALLOWED,0
+env = __GL_VRR_ALLOWED,0
+env = __GL_SYNC_TO_VBLANK,1  # era 0
+cursor { no_hardware_cursors = true }
+3. Hyprland — compositor eficiente
+bashmisc { vfr = true }           # era false
+animations { enabled = false }
+blur { enabled = false }      # passes=2 mataba la GPU
+```
+
+**4. Brave flags**
+Archivo: `~/.config/brave-flags.conf`
+```
+--ozone-platform=wayland
+--ignore-gpu-blocklist
+--enable-gpu-rasterization
+--enable-zero-copy
+--use-gl=egl                        # era angle
+--enable-features=VaapiVideoDecodeLinuxGL  # era VaapiVideoDecoder
+--disable-features=Vulkan
+5. Control de ventiladores — nbfc
+bashsudo pacman -S nbfc-linux
+sudo nbfc config --apply "Acer Nitro AN515-51"
+sudo systemctl enable --now nbfc_service
